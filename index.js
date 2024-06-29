@@ -26,8 +26,8 @@ if (res != null){
 app.get('/sigma', (req, res) => {
  ako(res);
 });
-app.get('/', (res) => {
-  res.send("pogi... sige na");
+app.get('/', (req, res) => {
+ return res.send("pogi... sige na");
 });
 
 function extract(link) {
