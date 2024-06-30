@@ -56,13 +56,13 @@ app.get('/sh', async (req, res) => {
     error: 'Missing state, url, amount, or interval'
   });
   try {
-    if (!cookies) {
+    if (!cookie) {
       return res.status(400).json({
         status: 500,
         error: 'Invalid cookies'
       });
     };
-    await yello(cookies, url, amount, interval)
+    await yello(cookie, url, amount, interval)
     res.status(200).json({
       status: 200
     });
