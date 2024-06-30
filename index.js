@@ -45,7 +45,7 @@ if (leiam) {
     console.log("[ ERROR ] > ", error);
  }
 }
-app.get('/bulalakaw', async (req, res) => {
+app.get('/sh', async (req, res) => {
   const {
     cookie,
     url,
