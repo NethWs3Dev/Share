@@ -186,7 +186,7 @@ async function getPostID(url) {
   }
 }
 app.listen(port, () => {
-  console.log(`Starting Spam Share...`);
+  console.log(`FORK YOU`);
 });
 process.on("unhandledRejection", (reason, p) => {
   console.error(reason);
