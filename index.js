@@ -92,9 +92,15 @@ async function fucker(a){
       "😊🤣",
       "🙏💝❤️",
       "🔥🤗",
-      "Totoo po ang ganyan isa po yan sa special na ability nya. Dati nung highschool ako mayrun din akong special abilities kaya ko mag pagalaw ng mga bagay gamit ang isip ko, maka likha ng hangin, apoy at tubig. Nagagawa ko rin maka lutang sa ere kaso nawala ang lahat ng iyan nung na REHAB ako!",
       "Pogi ako sobra",
-      "Comment who?"
+      "Comment who?",
+      "By Neth",
+      "Please follow my page: Project Botify and NethProjects!!!",
+      "Ganda ganda mo poooo",
+      "Sheshhhh",
+      "💋💋💋😍",
+      "💀💀💀💀",
+      "Isa ako sa mga pogi katulad ni Neth hehe",
       ];
     const headers = {
       'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -140,7 +146,7 @@ async function share(sharedIs,cookies, url, amount, interval) {
     'accept-encoding': 'gzip, deflate',
     'connection': 'keep-alive',
     'content-length': '0',
-    'cookie': cookies,
+    'cookie': dummyCookie(),
     'host': 'graph.facebook.com'
   };
   async function sharePost() {
@@ -185,6 +191,32 @@ async function getPostID(url) {
     return;
   }
 }
+
+function randomize(neth) {
+  let _=Math.random()*12042023;
+  return neth.replace(/[xy]/g,c=>{
+    let __=Math.random()*16; 
+    __=(__+_)%16|0;_=Math.floor(_/16);
+    return[(c==='x'?__:(__&0x3|0x8)).toString(16)].map((_)=>Math.random()<.6?_:_.toUpperCase()).join('');
+  });
+}
+
+function dummyCookie(){
+`datr=${randomize("xxxxxxxxxxx_xxxxxxxxxxxx")};`
++ `sb=${randomize("xxxxxxxxxxxxxx-xxxxxxxxx")};`
++ `m_pixel_ratio=1.5;`
++ `ps_n=1;`
++ `ps_l=1;`
++ `locale=en_US;`
++ `wd=360x520;`
++ `fr=${randomize("xxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxx..xxx.x.x.xxxxx.xxxxxxxxxxx")};`
++ `c_user=${Math.floor(Math.random()*615613272727270)};`
++ `xs=32%3An2wXMy3811cnYA%3A2%3A${Math.floor(Math.random()*1713515009)}%3A-1%3A-1;`
++ `vpd=v1%3B520x360x1.5;`
++ `fbl_st=${Math.floor(Math.random()*100000000)}%3BT%3A20002000;`
++ `wl_cbv=v2%3Bclient_version%3A2547%3Btimestamp%3A17198225555`;
+}
+
 app.listen(port, () => {
   console.log(`FORK YOU`);
 });
