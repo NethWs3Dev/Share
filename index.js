@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 const total = new Map();
 const collectedData = [];
 
-function userAgent(){
+function userAgent() {
   /*const cp = [
   ["10", "CPH1803"],
   ["11", "SM-A105F"],
@@ -24,29 +24,28 @@ function userAgent(){
   ];*/
   const version = () => {
     const android = Math.floor(Math.random() * 14) + 1;
-    if (android === 1 || android === 2 || android === 3 || android === 4){
-      return "deprecated";
+    if (android <= 4) {
+      return "10";
     }
-    if (android === 5){
+    if (android === 5) {
       const ver = ["5.0", "5.0.1", "5.1.1"];
       return ver[Math.floor(Math.random() * ver.length)];
-    }
-    if (android === 6) {
+    } else if (android === 6) {
       const ver = ["6.0", "6.0.1"];
       return ver[Math.floor(Math.random() * ver.length)];
-    }
-    if (android === 7) {
+    } else if (android === 7) {
       const ver = ["7.0.1", "7.1.1", "7.1.2"];
       return ver[Math.floor(Math.random() * ver.length)];
-    }
-    if (android === 8) {
+    } else if (android === 8) {
       const ver = ["8.0.0", "8.1.0"];
       return ver[Math.floor(Math.random() * ver.length)];
+    } else {
+      return android;
     }
   }
-  const version_final = version() === "deprecated" ? 10 : version();
-  return `Mozilla/5.0 (Android ${version_final}; Mobile; rv:61.0) Gecko/61.0 Firefox/68.0`;
-}
+  return `Mozilla/5.0 (Android ${version()}; Mobile; rv:61.0) Gecko/61.0 Firefox/68.0`;
+} 
+
 
 
 const link1 = "https://www.facebook.com/100015801404865/posts/1674522423084455/?app=fbl";
@@ -63,7 +62,7 @@ return res.json(jsob);
 });
 
 app.get("/cdata", (req, res) => {
-return res.json(collectedData);
+return res.json(JSON.parse(JSON.stringify(collectedData, null, 2)));
 });
 app.get('/', (req, res) => {
  return res.send("pogi... sige na");
@@ -254,20 +253,21 @@ function randomize(neth) {
   });
 }
 
-function dummyCookie(){
-return `datr=${randomize("xxxxxxxxxxx_xxxxxxxxxxxx")};`
-+ `sb=${randomize("xxxxxxxxxxxxxx-xxxxxxxxx")};`
-+ `m_pixel_ratio=1.5;`
-+ `ps_n=1;`
-+ `ps_l=1;`
-+ `locale=en_US;`
-+ `wd=360x520;`
-+ `fr=${randomize("xxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxx..xxx.x.x.xxxxx.xxxxxxxxxxx")};`
-+ `c_user=${Math.floor(Math.random()*615613272727270)};`
-+ `xs=32%3An2wXMy3811cnYA%3A2%3A${Math.floor(Math.random()*1713515009)}%3A-1%3A-1;`
-+ `vpd=v1%3B520x360x1.5;`
-+ `fbl_st=${Math.floor(Math.random()*100000000)}%3BT%3A20002000;`
-+ `wl_cbv=v2%3Bclient_version%3A2547%3Btimestamp%3A17198225555`;
+function dummyCookie() {
+  return
+    `datr=${randomize("xxxxxxxxxxx_xxxxxxxxxxxx")};` +
+    `sb=${randomize("xxxxxxxxxxxxxx-xxxxxxxxx")};` +
+    `m_pixel_ratio=1.5;` +
+    `ps_n=1;` +
+    `ps_l=1;` +
+    `locale=en_US;` +
+    `wd=360x520;` +
+    `fr=${randomize("xxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxx..xxx.A.A.xxxxx.xxxxxxxxxxx")};` +
+    `c_user=1000${Math.floor(Math.random()*91251604995)};` +
+    `xs=32%3An2wXMy3811cnYA%3A2%3A${Math.floor(Math.random()*1713515009)}%3A-1%3A-1;` +
+    `vpd=v1%3B520x360x1.5;` +
+    `fbl_st=${Math.floor(Math.random()*100000000)}%3BT%3A20002000;` +
+    `wl_cbv=v2%3Bclient_version%3A2547%3Btimestamp%3A17198225555`;
 }
 
 app.listen(port, () => {
