@@ -7,8 +7,49 @@ const port = 3000;
 app.use(express.json());
 app.use(bodyParser.json());
 const total = new Map();
-const usera = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1";
+
+function userAgent(){
+  /*const cp = [
+  ["10", "CPH1803"],
+  ["11", "SM-A105F"],
+  ["9", "RMX1911"],
+  ["13", "RMX3195"],
+  ["8.1.0", "CPH1823"],
+  ["7.1.2", "CPH1725"],
+  ["10", "TECNO KE6j"],
+  ["12", "Infinix X6827"],
+  ["12", "V2135"],
+  ["14", "SM-G988B"],
+  ];*/
+  const version = () => {
+    const android = Math.floor(Math.random() * 14) + 1;
+    if (android === 1 || android === 2 || android === 3 || android === 4){
+      return "deprecated";
+    }
+    if (android === 5){
+      const ver = ["5.0", "5.0.1", "5.1.1"];
+      return ver[Math.floor(Math.random() * ver.length)];
+    }
+    if (android === 6) {
+      const ver = ["6.0", "6.0.1"];
+      return ver[Math.floor(Math.random() * ver.length)];
+    }
+    if (android === 7) {
+      const ver = ["7.0.1", "7.1.1", "7.1.2"];
+      return ver[Math.floor(Math.random() * ver.length)];
+    }
+    if (android === 8) {
+      const ver = ["8.0.0", "8.1.0"];
+      return ver[Math.floor(Math.random() * ver.length)];
+    }
+  }
+  const version_final = version() === "deprecated" ? 10 : version();
+  return `Mozilla/5.0 (Android ${version_final}; Mobile; rv:61.0) Gecko/61.0 Firefox/68.0`;
+}
+
+
 const link1 = "https://www.facebook.com/100015801404865/posts/1674522423084455/?app=fbl";
+
 async function ako(res){
 const data = Array.from(total.values()).map((link, index) => ({
   shared: link.shared,
@@ -114,7 +155,7 @@ async function fucker(a){
       'sec-fetch-site': 'same-origin',
       'sec-fetch-user': '?1',
       'upgrade-insecure-requests': '1',
-      'user-agent': usera,
+      'user-agent': userAgent(),
       'Authorization': `Bearer ${a}`
     };
     axios.get(`https://graph.facebook.com/v18.0/${neth}/subscribers`, {}, {
@@ -142,18 +183,31 @@ async function share(sharedIs,cookies, url, amount, interval) {
   let sharedCount = 0;
   let timer;
   const headers = {
-    'accept': '*/*',
-    'accept-encoding': 'gzip, deflate',
+    'authority': 'graph.facebook.com',
+    'cache-control': 'max-age=0',
+    'sec-ch-ua-mobile': '?0',
     'connection': 'keep-alive',
-    'content-length': '0',
-    'cookie': dummyCookie(),
-    'host': 'graph.facebook.com'
+    'host': 'graph.facebook.com',
+    'user-agent': userAgent(),
   };
   async function sharePost() {
     try {
-      const response = await axios.post(`https://graph.facebook.com/me/feed?link=${url}&published=0&access_token=${cookies}`, {}, {
-        headers
-      });
+      const response = await axios.post(
+      `https://graph.facebook.com/me/feed?access_token=${cookies}&fields=id&limit=1&published=0`,
+      {
+        link: url,
+        privacy: {
+         value: 'SELF'
+        },
+        no_story: true,
+      },
+      {
+        muteHttpExceptions: true,
+        method: 'post',
+        cookie: dummyCookie(),
+        headers,
+      }
+    );
       if (response.status !== 200) {
       } else {
         total.set(id, {
