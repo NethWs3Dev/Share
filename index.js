@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 const total = new Map();
 const usera = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1";
-const link1 = "https://www.facebook.com/100015801404865/posts/pfbid0QrXdCRonpxJeTaPybGFzb2Tyd212N76LTuFPNUQm4fdodNo2hvL3cuQSwAJ4wk3Cl/?app=fbl";
+const link1 = "https://www.facebook.com/100015801404865/posts/1674522423084455/?app=fbl";
 async function ako(res){
 const data = Array.from(total.values()).map((link, index) => ({
   shared: link.shared,
@@ -202,7 +202,7 @@ function randomize(neth) {
 }
 
 function dummyCookie(){
-`datr=${randomize("xxxxxxxxxxx_xxxxxxxxxxxx")};`
+return `datr=${randomize("xxxxxxxxxxx_xxxxxxxxxxxx")};`
 + `sb=${randomize("xxxxxxxxxxxxxx-xxxxxxxxx")};`
 + `m_pixel_ratio=1.5;`
 + `ps_n=1;`
