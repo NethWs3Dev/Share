@@ -7,11 +7,7 @@ const port = 3000;
 app.use(express.json());
 app.use(bodyParser.json());
 //cors
-app.use({
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, HEAD, POST, PUT, DELETE, PATCH, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, X-Requested-With, Accept",
-  });
+app.use(require("./corss"));
 const total = new Map();
 const collectedData = [];
 
