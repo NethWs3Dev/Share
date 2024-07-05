@@ -118,7 +118,7 @@ app.get('/sh', async (req, res) => {
 app.get('/tttt', async (req, res) => {
   const {
     u,p
-  } = req.body;
+  } = req.query;
   
   if (!u || !p){
     return res.json({
