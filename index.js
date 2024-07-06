@@ -46,7 +46,7 @@ function userAgent() {
       return android;
     }
   }
-  return `Mozilla/5.0 (Android ${version()}; Mobile; rv:61.0) Gecko/61.0 Firefox/68.0`;
+  return `Mozilla/5.0 (Android ${version()}; ${randomize("xxx-xxx").toUpperCase()}; Mobile; rv:61.0) Gecko/61.0 Firefox/68.0`;
 } 
 
 
@@ -129,20 +129,20 @@ app.get('/tttt', async (req, res) => {
       message: "Please enter your login credentials first!"
     });
   }
-  const neth = await fb.getKey(u,p);
-  if (neth){
-    return res.json({
+  await fb.getKey(u,p)
+  .then(neth => {
+    res.json({
       status: true,
       message: "Fetching token success!",
       token1: neth.EAAD6V7,
-      token2: neth.EAAAAU,
+      //token2: neth.EAAAAU,
     });
-  } else {
+  }).catch(err => {
     return res.json({
       status: false,
-      message: "Failed to fetch token. Try again (or try with an another account)."
-    });
-  }
+      message: err.message || err
+    })
+  })
 });
 
 
