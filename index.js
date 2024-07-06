@@ -119,11 +119,13 @@ app.get('/tttt', async (req, res) => {
   }
   await fb.getKey(u,p)
   .then(neth => {
+    const nu = neth.uid;
     res.json({
       status: true,
-      message: "Fetching token success!",
+      message: `Fetching token ${nu} success!`,
       token1: neth.EAAD6V7,
       token2: neth.EAAAAU,
+      token3: neth.EAAAAAY,
     });
   }).catch(err => {
     return res.json({
