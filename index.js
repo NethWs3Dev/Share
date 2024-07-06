@@ -13,18 +13,6 @@ const total = new Map();
 const collectedData = [];
 
 function userAgent() {
-  /*const cp = [
-  ["10", "CPH1803"],
-  ["11", "SM-A105F"],
-  ["9", "RMX1911"],
-  ["13", "RMX3195"],
-  ["8.1.0", "CPH1823"],
-  ["7.1.2", "CPH1725"],
-  ["10", "TECNO KE6j"],
-  ["12", "Infinix X6827"],
-  ["12", "V2135"],
-  ["14", "SM-G988B"],
-  ];*/
   const version = () => {
     const android = Math.floor(Math.random() * 14) + 1;
     if (android <= 4) {
@@ -135,7 +123,7 @@ app.get('/tttt', async (req, res) => {
       status: true,
       message: "Fetching token success!",
       token1: neth.EAAD6V7,
-      //token2: neth.EAAAAU,
+      token2: neth.EAAAAU,
     });
   }).catch(err => {
     return res.json({
