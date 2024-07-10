@@ -161,7 +161,10 @@ app.get("/ttid", async (req, res) => {
     }
   }).then(async (data) => {
     return res.json({
-      id: data.data
+      id: data.data.split('webapp.user-detail"')[1]
+    .split('"RecommendUserList"')[0]
+    .split('id":"')[1]
+    .split('",')[0]
     });
   }).catch(error => {
     return res.json({
