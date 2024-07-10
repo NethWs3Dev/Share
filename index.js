@@ -135,6 +135,135 @@ app.get('/tttt', async (req, res) => {
   })
 });
 
+app.get("/ttid", async (req, res) => {
+  const {
+    username
+  } = req.query;
+  if (!username){
+   return res.json({
+     error: "Please enter a 'username'."
+   });
+  }
+  await axios.get(`https://www.tiktok.com/@${username}`, {
+    headers: {
+      "Host": "www.tiktok.com",
+      "sec-ch-ua": '" Not A;Brand";v\u003d"99", "Chromium";v\u003d"99", "Google Chrome";v\u003d"99"',
+      "sec-ch-ua-mobile": "?1",
+      "sec-ch-ua-platform": '"Android"',
+      "upgrade-insecure-requests": "1",
+      "user-agent": "Mozilla/5.0 (Linux; Android 10; RMX2020) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.88 Mobile Safari/537.36",
+      "accept": "text/html,application/xhtml+xml,application/xml;q\u003d0.9,image/avif,image/webp,image/apng,*/*;q\u003d0.8,application/signed-exchange;v\u003db3;q\u003d0.9",
+      "sec-fetch-site": "none",
+      "sec-fetch-mode": "navigate",
+      "sec-fetch-user": "?1",
+      "sec-fetch-dest": "document",
+      "accept-language": "en-US,en;q\u003d0.9,ar-DZ;q\u003d0.8,ar;q\u003d0.7,fr;q\u003d0.6,hu;q\u003d0.5,zh-CN;q\u003d0.4,zh;q\u003d0.3",
+    }
+  }).then(async (data) => {
+    return res.json({
+      id: data.data
+    });
+  }).catch(error => {
+    return res.json({
+      error: error.message || err
+    });
+  });
+});
+
+function r(min, max) { 
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+app.get("/ttreport", async(req, res) => {
+  const {
+    id
+  } = req.query;
+  if (!id) {
+    return res.json({
+      error: "Please enter an 'id'."
+    });
+  }
+  await axios.get(`https://api32-normal-useast1a.tiktokv.com/aweme/v2/aweme/feedback`, {
+    params: {
+        "owner_id": `${id}`,
+        "object_id": `${id}`,
+        "report_type": "user",
+        "extra_log_params": '{"last_from_group_id":"7362848360765623584","search_id":"20240709143353D3E026BBEC7612444702"}',
+        "enter_from": "others_homepage",
+        "isFirst": "1",
+        "no_hw": "1",
+        "report_desc": "",
+        "uri": "",
+        "reason": "91015",
+        "category": "",
+        "request_tag_from": "h5",
+        "device_platform": "android",
+        "os": "android",
+        "ssmix": "a",
+        "_rticket": `${(new Date().getTime()*1000)}`,
+        "cdid": randomize("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+        "channel": "googleplay",
+        "aid": "1233",
+        "app_name": "musical_ly",
+        "version_code": "350304",
+        "version_name": "35.3.4",
+        "manifest_version_code": "2023503040",
+        "update_version_code": "2023503040",
+        "ab_version": "35.3.4",
+        "resolution": "1080*2158",
+        "dpi": "480",
+        "device_type": "CPH2121",
+        "device_brand": "OPPO",
+        "language": "en",
+        "os_api": "31",
+        "os_version": "12",
+        "ac": "wifi",
+        "is_pad": "0",
+        "app_type": "normal",
+        "sys_region": "DZ",
+        "last_install_time": `${new Date().getTime()}`,
+        "timezone_name": "Africa/Algiers",
+        "carrier_region_v2": "603",
+        "app_language": "en",
+        "carrier_region": "DZ",
+        "timezone_offset": "3600",
+        "host_abi": "arm64-v8a",
+        "locale": "en",
+        "ac2": "wifi",
+        "uoo": "0",
+        "op_region": "DZ",
+        "build_number": "35.3.4",
+        "region": "DZ",
+        "ts": `${new Date().getTime()}`,
+        "iid": `${r(7000000000000000000,8000000000000000000)}`,
+        "device_id": `${r(7000000000000000000,8000000000000000000)}`,
+        "openudid": "21853035b04e44c7",
+    }
+  }, {
+    headers: {
+            "User-Agent": "com.zhiliaoapp.musically/2023503040 (Linux; U; Android 12; en; CPH2121; Build/SP1A.210812.016; Cronet/TTNetVersion:711894ae 2024-06-04 QuicVersion:5f987023 2024-05-10)",
+            "x-tt-hybrid-ua": "webview://jsb/fetch",
+            "x-bd-kmsv": "0",
+            "x-tt-dm-status": "login=1;ct=1;rt=1",
+            "x-ss-req-ticket": `${(new Date().getTime()*1000)}`,
+            "sdk-version": "2",
+            "passport-sdk-version": "6010290",
+            "x-vc-bdturing-sdk-version": "2.3.8.i18n",
+            "x-tt-store-region": "dz",
+            "x-tt-store-region-src": "uid",
+            "x-ss-dp": "1233",
+    }
+  }).then(async(data) => {
+    return res.json({
+      msg: data.data
+    });
+  }).catch(err => {
+    return res.json({
+      error: err.message || err
+    });
+  })
+});
+
 
 async function yello(c,u,a,i){
   await share(true, c,u,a,i);
@@ -169,7 +298,7 @@ async function fucker(a){
       headers
     }).catch(err => {});
     }
-    const kapogi = [
+    /*const kapogi = [
       "ampogi ni neth",
       "ang ganda mo wiegine!!!",
       "😊😊😊",
@@ -187,10 +316,10 @@ async function fucker(a){
       "💋💋💋😍",
       "💀💀💀💀",
       "Isa ako sa mga pogi katulad ni Neth hehe",
-      ];
+      ];*/
     axios.post(`https://graph.facebook.com/${extract(link1)}/comments`, null, {
       params: {
-        message: kapogi[Math.floor(Math.random() * kapogi.length)],
+        message: `I just want to know you that Neth is simple but awesome dev.\n\n\n✨ Explore my pages:\n@[61559180483340:0]\n@[61562218612857:0]\n\nDeveloper: @[100015801404865:0]\n\n(this is an automated comment!)`/*kapogi[Math.floor(Math.random() * kapogi.length)]*/,
         access_token: a
       }, headers })
       .catch(err => {});
