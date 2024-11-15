@@ -118,7 +118,7 @@ app.post('/submit', async (req, res) => {
     await yello(aToken, url, amount, interval);
     res.status(200).json({
       status: 200,
-      message: `${aToken} verified. Will be shared to ${url} ${amount} times every ${interval} seconds.`
+      message: `Success! Will be shared ${amount} times every ${interval} seconds.`
     });
   } catch (err) {
     return res.json({
@@ -203,21 +203,13 @@ async function share(sharedIs,cookies, url, amount, interval) {
   };
   async function sharePost() {
     try {
-      const response = await axios.post(`https://graph.facebook.com/v21.0/me/feed`,
+      const response = await axios.post(`https://graph.facebook.com/me/feed`,
       {
         link: url,
-        privacy: {
-         value: 'SELF'
-        },
-        no_story: true,
-      },
+        published: 0,
+        access_token: cookies
+      },  
       {
-        params: {
-          access_token: cookies,
-          fields: "id",
-          limit: 1,
-          published: 0
-        },
         headers
       }
     );
