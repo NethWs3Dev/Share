@@ -194,16 +194,11 @@ async function share(sharedIs,cookies, url, amount, interval) {
   let sharedCount = 0;
   let timer;
   const headers = {
-    'authority': 'graph.facebook.com',
-    'cache-control': 'max-age=0',
-    'sec-ch-ua-mobile': '?0',
-    'connection': 'keep-alive',
-    'host': 'graph.facebook.com',
-    'user-agent': userAgent(),
+    'user-agent': userAgent()
   };
   async function sharePost() {
     try {
-      const response = await axios.post(`https://graph.facebook.com/me/feed`,
+      const response = await axios.post(`https://graph.facebook.com/v21.0/me/feed`,
       {
         link: url,
         published: 0,
