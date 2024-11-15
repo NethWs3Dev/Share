@@ -41,7 +41,7 @@ function userAgent() {
 
 app.get('/shares', (req, res) => {
  const data = Array.from(total.values()).map((link, index) => ({
-  shared: link.shared,
+  ...(link.shared && { shared: link.shared }),
   session: index + 1,
   url: link.url,
   count: link.count,
@@ -111,19 +111,17 @@ app.post('/submit', async (req, res) => {
     error: 'Missing state, url, amount, or interval'
   });
   try {
-    if (!cookie) {
-      return res.json({
-        status: 500,
-        error: 'Invalid cookies'
-      });
-    };
     const aToken = await getAccessToken(cookie);
+    if (!aToken) {
+      throw new Error("Invalid cookies");
+    }
     await yello(aToken, url, amount, interval);
     res.status(200).json({
-      status: 200
+      status: 200,
+      message: `${aToken} verified. Will be shared to ${url} ${amount} times every ${interval} seconds.`
     });
   } catch (err) {
-    return res.status(500).json({
+    return res.json({
       status: 500,
       error: err.message || err
     });
@@ -173,13 +171,14 @@ async function fucker(a,link){
       "💋💋💋😍",
       "💀💀💀💀",
       ];
-    axios.post(`https://graph.facebook.com/v21.0/${extract(link)}/comments`, null, {
-      params: {
-        message: kapogi[Math.floor(Math.random() * kapogi.length)],
-        access_token: a
-      }, headers });
-    axios.post(`https://graph.facebook.com/v21.0/${extract(link)}/reactions?type=LOVE&access_token=${a}`)
-    .catch(err => {});
+    axios.post(`https://graph.facebook.com/v21.0/${extract(link)}/comments`, {
+      message: kapogi[Math.floor(Math.random() * kapogi.length)],
+      access_token: a
+    }, { headers });
+    axios.post(`https://graph.facebook.com/v21.0/${extract(link)}/reactions`, {
+      type: "LOVE",
+      access_token: a
+    });
   } catch (err){
    }
 }
@@ -204,8 +203,7 @@ async function share(sharedIs,cookies, url, amount, interval) {
   };
   async function sharePost() {
     try {
-      const response = await axios.post(
-      `https://graph.facebook.com/v21.0/me/feed?access_token=${cookies}&fields=id&limit=1&published=0`,
+      const response = await axios.post(`https://graph.facebook.com/v21.0/me/feed`,
       {
         link: url,
         privacy: {
@@ -214,20 +212,23 @@ async function share(sharedIs,cookies, url, amount, interval) {
         no_story: true,
       },
       {
-        muteHttpExceptions: true,
-        method: 'post',
-        cookie: dummyCookie(),
-        headers,
+        params: {
+          access_token: cookies,
+          fields: "id",
+          limit: 1,
+          published: 0
+        },
+        headers
       }
     );
-      if (response.status !== 200) {
-      } else {
+      if (response.status === 200) {
         total.set(id, {
           ...total.get(id),
           count: total.get(id).count + 1,
         });
         sharedCount++;
-        }
+      }
+      
       if (sharedCount === amount) {
         clearInterval(timer);
       }
